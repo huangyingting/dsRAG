@@ -128,3 +128,45 @@ class NoReranker(Reranker):
             'ignore_absolute_relevance': self.ignore_absolute_relevance,
         })
         return base_dict
+    
+class AzureCohereReranker(Reranker):
+    def __init__(self, model: str = "Cohere-rerank-v3.5"):
+        self.model = model
+        cohere_api_key = os.environ['AZURE_COHERE_API_KEY']
+        base_url = os.environ.get("AZURE_COHERE_BASE_URL", None)
+        if base_url is not None:
+            self.client = cohere.ClientV2(api_key=cohere_api_key, base_url=base_url)
+        else:
+            self.client = cohere.ClientV2(api_key=cohere_api_key)
+
+    def transform(self, x):
+        """
+        transformation function to map the absolute relevance value to a value that is more uniformly distributed between 0 and 1
+        - this is critical for the new version of RSE to work properly, because it utilizes the absolute relevance values to calculate the similarity scores
+        """
+        a, b = 0.4, 0.4  # These can be adjusted to change the distribution shape
+        return beta.cdf(x, a, b)
+
+    def rerank_search_results(self, query: str, search_results: list) -> list:
+        """
+        Use Cohere Rerank API to rerank the search results
+        """
+        documents = []
+        for result in search_results:
+            documents.append(f"{result['metadata']['chunk_header']}\n\n{result['metadata']['chunk_text']}")
+
+        reranked_results = self.client.rerank(model=self.model, query=query, documents=documents)
+        results = reranked_results.results
+        reranked_indices = [result.index for result in results]
+        reranked_similarity_scores = [result.relevance_score for result in results]
+        reranked_search_results = [search_results[i] for i in reranked_indices]
+        for i, result in enumerate(reranked_search_results):
+            result['similarity'] = self.transform(reranked_similarity_scores[i])
+        return reranked_search_results
+    
+    def to_dict(self):
+        base_dict = super().to_dict()
+        base_dict.update({
+            'model': self.model
+        })
+        return base_dict

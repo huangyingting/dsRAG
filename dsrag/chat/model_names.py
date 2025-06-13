@@ -40,3 +40,17 @@ OPENAI_MODEL_NAMES = [
     "gpt-4.5-preview-2025-02-27",
     "chatgpt-4o-latest",
 ]
+
+AZURE_OPENAI_MODEL_NAMES = [
+    "azure/gpt-4o-mini",
+    "azure/gpt-4o",
+    "azure/o1",
+    "azure/o1-preview",
+    "azure/o3-mini",
+    "azure/o3",
+    "azure/o4-mini",
+    "azure/gpt-4.5-preview",
+    "azure/gpt-4.1-nano",
+    "azure/gpt-4.1-mini",
+    "azure/gpt-4.1",
+]

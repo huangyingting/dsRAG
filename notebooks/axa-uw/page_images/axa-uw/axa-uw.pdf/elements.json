@@ -1,0 +1,122 @@
+[
+  {
+    "type": "NarrativeText",
+    "content": "# life underwriting condensed guide",
+    "page_number": 1
+  },
+  {
+    "type": "Image",
+    "content": "A professional group photo showing a diverse group of business people standing in a modern office corridor. The foreground features a woman in a dark sleeveless top with a bow detail. The background shows several other individuals in business attire, slightly blurred to emphasize depth. The right side of the image includes a bold diagonal design element in blue with a thinner red diagonal stripe overlaying it, contributing to a corporate and modern aesthetic.",
+    "page_number": 1
+  },
+  {
+    "type": "NarrativeText",
+    "content": "For Financial Professional Use Only. Not for Use with, or Distribution to the General Public.",
+    "page_number": 1
+  },
+  {
+    "type": "Image",
+    "content": "The AXA logo positioned at the bottom right corner of the page, featuring the company's name in white text on a blue square background with a red diagonal line.",
+    "page_number": 1
+  },
+  {
+    "type": "Table",
+    "content": "A table titled \"AXA Underwriting Criteria \u2014 Preferred Guidelines\" with a header row \"All Applicants\" spanning four columns. The columns are labeled: \"Term, UL/VL (except COIL & SIL) Products\", \"Preferred Elite Non-Tobacco\", \"Preferred Non-Tobacco\", and \"Standard Plus Non-Tobacco Preferred Tobacco\u00b9\". The rows detail criteria for: \n- ISWL, COIL & SIL: N/A under Preferred Elite Non-Tobacco; \"Preferred Plus Non-Tobacco\" under Preferred Non-Tobacco; \"Preferred Non-Tobacco Preferred Tobacco\u00b9\" under Standard Plus Non-Tobacco Preferred Tobacco\u00b9.\n- Total Cholesterol & Cholesterol/HDL: \"300 and 5.0\" for Preferred Elite Non-Tobacco; \"300 and 5.5\" for Preferred Non-Tobacco; \"300 and 6.0\" for Standard Plus Non-Tobacco Preferred Tobacco\u00b9.\n- Tobacco Use\u00b9: \"No nicotine use past 5 years\" for Preferred Elite Non-Tobacco; \"No nicotine use past 3 years\" for Preferred Non-Tobacco; \"No nicotine use for past 12 months to qualify for non-tobacco use rates\" for Standard Plus Non-Tobacco Preferred Tobacco\u00b9.\n- Alcohol and/or Substance Abuse: \"No history\" for Preferred Elite Non-Tobacco; \"No history of abuse for 8 years\" for Preferred Non-Tobacco; \"No history of abuse for 6 years\" for Standard Plus Non-Tobacco Preferred Tobacco\u00b9.\n- Aviation (Private), Avocation and Occupation: Note under Preferred Non-Tobacco that \"Preferred ratings may be allowed. Permanent flat extra up to $3.50 per thousand may be available for all products as applicable.\" No entries for other columns.\n- Medical History/Physical Condition: Under Preferred Non-Tobacco, \"No personal history of cancer (except certain skin cancers), diabetes or heart disease, even if not ratable.\" No entries for other columns.\n\nA footnote at the bottom states: \"\u00b9 Whenever a proposed insured tests positive for nicotine (cotinine) regardless of source, tobacco user rates will be charged. Tobacco rates will be charged if the proposed insured used cigarettes, e-cigarettes or hookah within the last 12 months. Tobacco and nicotine products other than noted may qualify for NT rates.\"",
+    "page_number": 2
+  },
+  {
+    "type": "Footer",
+    "content": "Page 1",
+    "page_number": 2
+  },
+  {
+    "type": "NarrativeText",
+    "content": "# AXA Underwriting Criteria \u2014 Preferred Guidelines Cont'd\n\n## Applicants 0-69\n\n| Term, UL/VL (except COIL & SIL) Products | Preferred Elite Non-Tobacco | Preferred Non-Tobacco | Standard Plus Non-Tobacco Preferred Tobacco |\n|----------------------------------------|------------------------------|-----------------------|--------------------------------------------|\n| ISWL, COIL & SIL                       | N/A                          | Preferred Plus Non-Tobacco | Preferred Non-Tobacco Preferred Tobacco |\n| **Medication**                        | All Rx considered except: Rx for BP allowed only if reading of 125/80 or better | All Rx considered | All Rx considered |\n| **Family History\u00b2**                   | No deaths from CAD, CVD, or Ca for M or F or S < 60 | No deaths from CAD or the following Ca: breast, melanoma, colorectal, ovarian or prostate for M or F < 60 | No more than 1 death from CAD for M & F < 60 |\n| **Blood Pressure**                   | ages < 60: 140/85 (No BP RX) ages 60-69: 150/90 (No BP RX) ages 0-69: 125/80 (On BP RX) | ages < 60: 145/90 ages 60-69: 150/90 | Non-ratable BP readings |\n| **Driving History**                  | No DWI, reckless driving or license suspension in the past 5 years No more than two moving violations in the past 3 years\u00b3 | No DWI, reckless driving or license suspension in the past 5 years No more than three moving violations in the past 3 years\u00b3 | No DWI, reckless driving or license suspension in the past 3 years No more than three moving violations in the past 3 years\u00b3 |\n\n## Applicants 70 and Over\n\n| Medication    | All Rx considered | All Rx considered | All Rx considered |\n|---------------|-------------------|-------------------|-------------------|\n| Family History| No criteria       | No criteria       | No criteria       |\n| Blood Pressure| 150/90            | 150/90            | 150/90            |\n| Driving History| No DWI, reckless driving or license suspension in the past 5 years No more than one moving violation in the past 3 years\u00b3 | No DWI, reckless driving or license suspension in the past 5 years No more than two moving violations in the past 3 years\u00b3 | No DWI, reckless driving or license suspension in the past 3 years No more than three moving violations in the past 3 years\u00b3 |\n\n---\n\n\u00b2 All Preferred ratings are available if death occurs from testicular, prostate, ovarian, cervical, breast or uterine cancer in a relative of the opposite sex to the Proposed Insured. All Preferred ratings are also available if death occurred from lung cancer in Proposed Insureds who have never smoked.\n\n\u00b3 Includes cell phone and texting violations.\n\n**Abbreviations are as follows:**\n- Coronary Artery Disease (CAD)\n- Cerebrovascular Disease (CVD)\n- Cancer (Ca)\n- Mother (M)\n- Father (F)\n- Siblings (S)\n- Blood Pressure (BP)\n- Medication (Rx)\n- Attending Physician Statement (APS)\n- Motor Vehicle Report (MVR)\n- Home Office Specimen - urinalysis (HOS)",
+    "page_number": 3
+  },
+  {
+    "type": "Table",
+    "content": "This table is titled \"BMI/Build Charts\" and is divided into two main sections: \"BMI Ages up to 69\" and \"BMI Ages 70 and up.\" The table includes columns for different product categories such as Preferred Elite Non-Tobacco, Preferred Non-Tobacco, Standard Plus Non-Tobacco Preferred Tobacco, and their equivalents for ages 70 and up. It also includes a row for ISWL, COIL & SIL with notes on preferred tobacco use.\n\nThe rows list heights from 4'6\" to 7'0\" in one-inch increments. For each height, the table provides the maximum weight corresponding to specific BMI values for each product and age category. The BMI values range from 28.5 to 33 depending on the category. The maximum weights increase with height and BMI values.\n\nAt the bottom, there is a note stating: \"Note: BMI = Body Mass Index. Chart is unisex, maximum weight is in pounds.\"",
+    "page_number": 4
+  },
+  {
+    "type": "NarrativeText",
+    "content": "# Life Underwriting Requirements Ages 0\u201350  \n*(See Notes Section on Page 6 for Definitions and Additional Requirements.)*  \nRefer to the charts below for preferred class consideration. See footnotes for other details. See charts below for APS requirements.",
+    "page_number": 5
+  },
+  {
+    "type": "Table",
+    "content": "A table titled \"Life Underwriting Requirements Ages 0\u201350\" showing Face Amounts and Issue Ages. The Face Amounts column lists ranges from $0 to over $10,000,000. Issue Ages are categorized into 0\u201315, 16\u201330, 31\u201335, 36\u201340, and 41\u201350. For each face amount and age group, the required underwriting elements are listed, including terms such as \"Non-Med\" for younger ages, and \"Paramed, HOS, Blood, MVR\" for older ages. The table uses shading to differentiate rows and columns, with blue headers and alternating row colors.",
+    "page_number": 5
+  },
+  {
+    "type": "NarrativeText",
+    "content": "# Life Underwriting Requirements Ages 51 and Above",
+    "page_number": 5
+  },
+  {
+    "type": "Table",
+    "content": "A table titled \"Life Underwriting Requirements Ages 51 and Above\" with Face Amounts and Issue Ages broken into 51\u201360, 61\u201365, 66\u201369, and 70 & Over. The face amounts range from $0 to over $10,000,000. The table indicates requirements such as \"Paramed, HOS, Blood, MVR\" for various amounts and ages, with additional notes for EKG requirements at higher amounts and ages. The layout uses blue headers and alternating shading for clarity.",
+    "page_number": 5
+  },
+  {
+    "type": "Table",
+    "content": "Two smaller tables side by side:  \n- Left table titled \"APS Required if Proposed Insured Had Checkup Within the Past Year\" listing Issue Age and Amount thresholds for APS requirements, ranging from 16\u201350 to 66\u201369 with corresponding amounts from \u2265 $2,000,000 to > $50,000.  \n- Right table titled \"APS Always Required\" listing Issue Age and Face Amount thresholds, with ages 0\u201315 to 70+ and amounts from > $500,000 to all amounts for 70+.",
+    "page_number": 5
+  },
+  {
+    "type": "Footnote",
+    "content": "4 Standard rate class may be available with a Non-Med and HOS at $0-$99,999. Standard rate class may be available with a Non-Med, MVR, HOS and Blood at $100,000-$500,000, depending on the specific age/amount up through age 50. Standard rate class may be available with paramedical and HOS at $0-$99,999 at ages 51 and older. NOTE: For juveniles, ages 0-15, Standard Plus is only rate available; ages 16-17, Standard Plus is only rate available with Non-Med and HOS.\n5 For CA, CT, DC, DE, FL, GA, IL, LA, MA, MD, NJ, NY, PA, PR, SC, TX and VA \u2013 require HOS with HIV testing > age 15 at $50,000\u2013$99,999.\n6 NT Pro BNP is required at certain ages and amounts as part of the insurance blood profile: ages 51-65 >$500,000, ages 66+>$250,000.\n7 Treadmill EKG will only be needed if the Proposed Insured is a tobacco user or Diabetic or no APS is available; otherwise a resting EKG and hemoglobin A1c and NT ProBNP are required.\n8 Non-Med - Application and Medical Information Questionnaire (MIQ).",
+    "page_number": 5
+  },
+  {
+    "type": "Footer",
+    "content": "Page 4",
+    "page_number": 5
+  },
+  {
+    "type": "Table",
+    "content": "A table titled **Financial Underwriting Requirements (See Notes Section on Page 6 for Definitions.)** with three columns: Face Amounts, Age 69 and Below, Ages 70 and Above. Rows include various face amount ranges ($2,000,000; $2,000,001 to $5,000,000; $5,000,001 to $10,000,000; $10,000,001 +) and corresponding requirements such as Financial Questionnaire, Internal Data Verification (IDV), Inspection Report, Documentation of Net Worth by disinterested third party, and for trusts, Complete Trust Document. The $10,000,001+ row also includes detailed notes about prior year's federal income tax statements and business financial statements requirements.",
+    "page_number": 6
+  },
+  {
+    "type": "Table",
+    "content": "A table titled **AXA Approved Vendors** divided into four sections: Approved Paramedical/Medical Examination Vendors, Approved APS Retrieval Services, Approved Laboratory Testing Services, and Approved Inspection Report Service. It lists vendors with names, contact numbers, and websites: APPS (American Para Professional Services) with phone and website, EMSI (Examination Management Services Inc.) with phone and website, ExamOne (a Quest Diagnostics Company) with website and note for online orders only, Parameds.com with phone numbers and website, CRL (Clinical Reference Lab), and EMSI again for inspection report service.",
+    "page_number": 6
+  },
+  {
+    "type": "Footnote",
+    "content": "9 An additional telephone interview with the Proposed Insured's accountant, attorney or banker will be conducted by our preferred vendor to verify financial information if the Face Amount is over $5,000,000 and the Proposed Insured is issue age 70 or above.",
+    "page_number": 6
+  },
+  {
+    "type": "NarrativeText",
+    "content": "# Notes:\n\n* **Face Amount** is defined as all life insurance in force and applied for with AXA, MONY and/or affiliates within the past 12 months from the date of the application. This includes ultimate death benefit amounts of any policy or rider (e.g., ROPR). For Survivorship, order requirements on half the Face Amount, except for financial underwriting document requirements (such as trust documents, Financial Supplements, Inspection Report, or federal income tax statements), order on the full Face Amount.\n* **Applicants Age 70 and Above:** Paramed exams include a Senior Questionnaire with Cognitive/Frailty tests.\n* **Paramedical Exams and Laboratory Test Results** are valid up to 12 months for Proposed Insureds under age 70; otherwise, up to 6 months. Requirements completed for another carrier will be considered on a case by case basis. AXA reserves the right to request additional requirements if our specifications are not met.\n* **MVR** (Motor Vehicle Report) will be ordered by the Home Office.\n* **EKG** (Electrocardiogram): Resting EKG completed within 12 months or a Treadmill EKG completed within the past 24 months may be borrowed in lieu of a current test. Actual tracings (not the EKG report) are required.\n* **Treadmill EKG** should not be requested if there is a history of coronary disease or chest pain. Treadmill EKG is required at ages 51\u201369, over $10,000,000 if the Proposed Insured is a tobacco user, diabetic or no APS is available.\n* **APS** (Attending Physician Statement) is required, as indicated on the Life Underwriting Requirements charts, if the Proposed Insured had a checkup within 12 months (6 months if favorable risk factors) or as needed to verify the Proposed Insured's medical history. A checkup excludes physicals completed for employment, school, insurance, military, FAA (aviation) and Department of Transportation. However, for the ages and amounts where an APS is always required, as listed in the chart above, if there were no other doctor visits, we will obtain the records for physicals completed for employment, school, etc.\n* **RX Check** (Prescription History and Other Pharmaceutical Data Searches) will be ordered by the Home Office.\n* **Inspection Report:** A telephone interview with the Proposed Insured by our preferred vendor to confirm information provided on the application and questionnaires such as the Proposed Insured's personal data, habits, insurance activity, health, finances, etc.\n* **Internal Data Verification (IDV) (aka e-Inspection Report)** will be obtained by the Home Office for applications over $2,000,000.\n* **Documentation of Net Worth by Independent Third Party:** Balance sheets, profit & loss statements, other pro forma documents are examples of acceptable forms of documentation.",
+    "page_number": 7
+  },
+  {
+    "type": "Footer",
+    "content": "**AXA reserves the right to request additional requirements whenever these are deemed necessary. The requirements submitted do not guarantee any specific underwriting rate classification.**\n\n6",
+    "page_number": 7
+  },
+  {
+    "type": "NarrativeText",
+    "content": "# Financial Underwriting Guidelines\n\n(See Notes Section on Page 6 for Definitions.)\n\n## Personal\n\n### Income Replacement\n\n- **Working Individual** \u2014 All sources of earned income, including salary, bonus or other deferred compensation or Gross Annual Earned Income\n- **Non-Working Spouse, Co-Breadwinner, and Other Dependent Adults** \u2014 To determine if any amount is available, require income information and amount of insurance on breadwinner\n- **Unemployed** \u2014 To determine if any amount is available, require information regarding past earnings, current assets, past and future occupation contemplated\n\n### Estate Planning\n\nNeed clear figure of net worth\n\n### Juvenile\n\n- Equal amounts on all children\n- Provide coverage information on application \u2014 Total life insurance inforce or pending in all companies on the juvenile and on the applicant or child's parent AND reason if there are any other children in the family insured for a lesser amount\n\n### Debt Repayment\n\nCopy of loan agreement\n\n### Charitable\n\nCover letter explaining interest in the charity and how the amount was determined\n\n### Future Inheritance\n\n- Donor must be age 70 or older; If donor < 70, a detailed explanation from independent source must be submitted confirming Life Expectancy < 5 years\n- Cover letter containing estate planning details\n- Applicable trust documents, will, or other third-party verification of expected inheritance\n- Verification of net worth of parent(s) or bequeather(s)\n\n### Long-Term Care Services\u00ae Rider (LTCSR)\n\nLTCSR questionnaire plus other new business requirements\n\n## Business\n\n### Buy-Sell\n\n- Insured percentage of ownership in business\n- Cover letter regarding buy-sell arrangement\n- Confirmation that buy-sell agreement has been executed, information regarding business partners applied in like manner\n\n### Key Person\n\nCover letter describing how amount was determined\n\n### Employee Benefit\n\nCover letter describing how amount was determined, who is covered, formula for determining coverage amount, and size of company\n\n### Debt Repayment\n\nCover letter regarding amount of loan, loan duration, date loan committed, name of lender and collateral pledged to secure loan",
+    "page_number": 8
+  },
+  {
+    "type": "Table",
+    "content": "A table with three main columns: Purpose, Requirements, and Amounts. It is divided into two main sections: Personal and Business.\n\n- Under Personal:\n  - Income Replacement: Requirements include determining income sources for working individuals, non-working spouses, and unemployed; Amounts specify growth potential with maximum income multiples (e.g., 30x income for ages 18-40, down to 5x income for ages 71-79) and individual consideration for ages 80 and up.\n  - Estate Planning: Requires clear figure of net worth; amounts consider 50%-75% life expectancy multiplied by estate growth factor and applicable tax rate with estate growth factors of 7% (<70), 6% (70-79), and 2% (\u226580).\n  - Juvenile: Equal amounts on all children, coverage information on application; amounts specify \u00bc to \u00bd amount on parent or payor with special rules for NY and WA.\n  - Debt Repayment: Copy of loan agreement; amounts specify loan duration at least 5 years covering 100% of loan amount.\n  - Charitable: Cover letter explaining interest and amount determination; amounts mention replacement of financial and/or service contributions.\n  - Future Inheritance: Donor age requirements and documentation; amounts specify growth rate factor up to 3%-5% for a maximum of 10 years.\n  - Long-Term Care Services Rider: Questionnaire and business requirements; amounts specify maximum monthly benefit including pending riders, with limits based on income or age.\n\n- Under Business:\n  - Buy-Sell: Requirements include insured percentage of ownership, cover letter, and confirmation of executed agreement; amounts relate to percent ownership times market value, coverage not to exceed 2x market value.\n  - Key Person: Cover letter describing amount determination; amounts specify 10x compensation (salary plus bonus).\n  - Employee Benefit: Cover letter describing amount determination, coverage, formula, and company size; amounts are individual consideration.\n  - Debt Repayment: Cover letter regarding loan details; amounts specify loan duration at least 5 years covering 100% of loan amount times percent ownership.",
+    "page_number": 8
+  },
+  {
+    "type": "Footnote",
+    "content": "\"AXA\" is a brand name of AXA Equitable Financial Services, LLC and its family of companies, including AXA Equitable Life Insurance Company (NY, NY); MONY Life Insurance Company of America (AZ stock company, administrative office: Jersey City, NJ); AXA Advisors, LLC; and AXA Distributors, LLC. AXA S.A. is a French holding company for a group of international insurance and financial services companies, including AXA Equitable Financial Services, LLC. This brand name change does not change the legal name of any of the AXA Equitable Financial Services, LLC companies. The separate obligations of AXA Equitable Life Insurance Company and MONY Life Insurance Company of America are backed solely by their respective claims-paying ability.\n\nLife insurance products are issued by AXA Equitable Life Insurance Company (New York, NY); or MONY Life Insurance Company of America (MLOA) an Arizona stock corporation with its administrative office in Jersey City, NJ. MLOA is not licensed to conduct business in New York and Puerto Rico. Variable life insurance products are co-distributed by affiliates AXA Advisors, LLC and AXA Distributors, LLC. Life insurance is co-distributed by affiliates AXA Distributors, LLC and AXA Network, LLC and its subsidiaries.\n\nIU-125556 (8/17) (Exp. 8/19)  G232153\nCat. #158407 (8/18)",
+    "page_number": 8
+  },
+  {
+    "type": "Image",
+    "content": "The AXA logo located at the bottom right corner of the page, featuring the company's blue color scheme and distinctive design.",
+    "page_number": 8
+  }
+]

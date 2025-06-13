@@ -7,7 +7,8 @@ import warnings
 from dsrag.chat.model_names import (
     OPENAI_MODEL_NAMES,
     ANTHROPIC_MODEL_NAMES,
-    GEMINI_MODEL_NAMES
+    GEMINI_MODEL_NAMES,
+    AZURE_OPENAI_MODEL_NAMES
 )
 
 
@@ -99,6 +100,8 @@ def get_response(
 
 def _handle_instructor_mode(messages: List[Dict], model_name: str, response_model: BaseModel, temperature: float, max_tokens: int) -> BaseModel:
     """Handle structured output using Instructor"""
+    if model_name in AZURE_OPENAI_MODEL_NAMES or model_name.startswith("azure/"):
+        return _handle_azure_openai_instructor(messages, model_name, response_model, temperature, max_tokens)
     if model_name in ANTHROPIC_MODEL_NAMES or model_name.startswith("anthropic/"):
         return _handle_anthropic_instructor(messages, model_name, response_model, temperature, max_tokens)
     if model_name in OPENAI_MODEL_NAMES or model_name.startswith("openai/"):
@@ -109,6 +112,8 @@ def _handle_instructor_mode(messages: List[Dict], model_name: str, response_mode
 
 def _handle_instructor_streaming(messages: List[Dict], model_name: str, response_model: BaseModel, temperature: float, max_tokens: int):
     """Handle structured output using Instructor with streaming"""
+    if model_name in AZURE_OPENAI_MODEL_NAMES or model_name.startswith("azure/"):
+        return _handle_azure_openai_instructor_streaming(messages, model_name, response_model, temperature, max_tokens)
     if model_name in ANTHROPIC_MODEL_NAMES or model_name.startswith("anthropic/"):
         return _handle_anthropic_instructor_streaming(messages, model_name, response_model, temperature, max_tokens)
     if model_name in OPENAI_MODEL_NAMES or model_name.startswith("openai/"):
@@ -418,3 +423,65 @@ def _format_genai_messages(messages):
                 parts.append(str(part))
         formatted.append({"role": msg["role"], "content": parts})
     return formatted
+
+# Azure OpenAI Handlers
+def _handle_azure_openai_instructor(messages, model_name, response_model, temperature, max_tokens):
+    client = instructor.from_openai(openai.AzureOpenAI(
+        azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15")
+    ))   
+    formatted = _format_openai_messages(messages)
+    if model_name.startswith("azure/"):
+        model_name = model_name.split("/")[1]
+
+    # Use max_completion_tokens for o-series models
+    model_kwargs = {
+        "model": model_name,
+        "messages": formatted,
+        "response_model": response_model,
+    }
+    if model_name.startswith("o"):
+        model_kwargs["max_completion_tokens"] = max_tokens
+    else:
+        model_kwargs["max_tokens"] = max_tokens
+        model_kwargs["temperature"] = temperature
+
+    return client.chat.completions.create(**model_kwargs)
+
+def _handle_azure_openai_instructor_streaming(messages, model_name, response_model, temperature, max_tokens):
+    """Handle structured output streaming with OpenAI using Instructor"""
+    # Use the Partial response model for streaming
+    from dsrag.chat.citations import PartialResponseWithCitations
+    
+    # For ResponseWithCitations specifically, use our partial version
+    partial_model = PartialResponseWithCitations if response_model.__name__ == "ResponseWithCitations" else instructor.Partial[response_model]
+    
+    client = instructor.from_openai(openai.AzureOpenAI(
+        azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15")
+    ))
+    formatted = _format_openai_messages(messages)
+
+    if model_name.startswith("azure/"):
+        model_name = model_name.split("/")[1]
+    
+    # Use max_completion_tokens for o-series models
+    model_kwargs = {
+        "model": model_name,
+        "messages": formatted,
+        "response_model": partial_model,
+        "stream": True,
+    }
+    if model_name.startswith("o"):
+        model_kwargs["max_completion_tokens"] = max_tokens
+    else:
+        model_kwargs["max_tokens"] = max_tokens
+        model_kwargs["temperature"] = temperature
+
+    # Create streaming request
+    stream = client.chat.completions.create(**model_kwargs)
+    
+    # Return the stream directly - caller will iterate through it
+    return stream

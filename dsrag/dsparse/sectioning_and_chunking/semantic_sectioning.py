@@ -116,6 +116,29 @@ def get_structured_document(document_with_line_numbers: str, start_line: int, ll
                 "max_output_tokens": 4000
             }
         )
+    elif llm_provider == "azure_openai":
+        from openai import AzureOpenAI
+        client = instructor.from_openai(AzureOpenAI(
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15")
+        ))        
+        return client.chat.completions.create(
+            model=model,
+            response_model=StructuredDocument,
+            max_tokens=4000,
+            temperature=0.0,
+            messages=[
+                {
+                    "role": "system",
+                    "content": formatted_system_prompt,
+                },
+                {
+                    "role": "user",
+                    "content": document_with_line_numbers,
+                },
+            ],
+        )    
     else:
         raise ValueError("Invalid provider. Must be one of: 'anthropic', 'openai', 'gemini'.")
 

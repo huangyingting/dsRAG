@@ -184,3 +184,28 @@ class OllamaEmbedding(Embedding):
         base_dict = super().to_dict()
         base_dict.update({"model": self.model})
         return base_dict
+    
+class AzureOpenAIEmbedding(Embedding):
+    def __init__(self, model: str = "text-embedding-3-small", dimension: int = 768):
+        """
+        Only v3 models are supported.
+        """
+        super().__init__(dimension)
+        self.model = model
+        self.client = openai.AzureOpenAI(
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15")
+        )
+
+    def get_embeddings(self, text: list[str], input_type: Optional[str] = None) -> list[Vector]:
+        response = self.client.embeddings.create(
+            input=text, model=self.model, dimensions=self.dimension
+        )
+        embeddings = [embedding_item.embedding for embedding_item in response.data]
+        return embeddings[0] if isinstance(text, str) else embeddings
+
+    def to_dict(self):
+        base_dict = super().to_dict()
+        base_dict.update({"model": self.model})
+        return base_dict

@@ -1,4 +1,4 @@
-from .vlm import make_llm_call_gemini, make_llm_call_vertex
+from .vlm import make_llm_call_gemini, make_llm_call_vertex, make_llm_call_azure_openai
 from ..models.types import ElementType, Element, VLMConfig
 from .file_system import FileSystem
 from .element_types import (
@@ -133,7 +133,7 @@ def pdf_to_images(pdf_path: str, kb_id: str, doc_id: str, file_system: FileSyste
     logger.info(f"Converted total {len(all_image_paths)} pages to images", extra=base_extra)
     return all_image_paths
 
-def parse_page(kb_id: str, doc_id: str, file_system: FileSystem, page_number: int, vlm_config: VLMConfig, element_types: list[ElementType]) -> list[Element]:
+def parse_page(kb_id: str, doc_id: str, file_system: FileSystem, page_number: int, vlm_config: VLMConfig, element_types: list[ElementType], log_errors: bool = False) -> list[Element]:
     """
     Given an image of a page, use LLM to extract the content of the page.
 
@@ -241,7 +241,42 @@ def parse_page(kb_id: str, doc_id: str, file_system: FileSystem, page_number: in
                         "type": "text",
                         "content": "Unable to process page"
                     }])
-                    
+    elif vlm_config["provider"] == "azure_openai":
+        try:
+            # Get temperature from vlm_config or use default
+            # NOTE: it's very important to use a non-zero temperature here
+            # Using a temp of 0 causes frequent degenerative output that can't be fixed by retrying
+            temperature = vlm_config.get("temperature", 0.5) 
+            
+            llm_output = make_llm_call_azure_openai(
+                image_path=page_image_path, 
+                system_message=system_message, 
+                model=vlm_config["model"],
+                max_tokens=vlm_config.get("max_tokens", 4000),
+                temperature=temperature
+            )
+        except Exception as e:
+            base_extra = {"kb_id": kb_id, "doc_id": doc_id, "page_number": page_number}
+            if "429" in str(e):
+                logger.warning(f"Rate limit exceeded in make_llm_call_azure_openai: {e}", extra=base_extra)
+                return 429
+            else:
+                logger.error(f"Error in make_llm_call_azure_openai: {e}", extra=base_extra)
+                error_data = {
+                    "error": f"Error in make_llm_call_azure_openai: {e}",
+                    "function": "parse_page",
+                    "page_number": page_number
+                }
+                try:
+                    if log_errors:
+                        file_system.log_error(kb_id, doc_id, error_data)
+                except Exception as log_error:
+                    logger.error(f"Failed to log error: {log_error}", extra=base_extra)
+                finally:
+                    llm_output = json.dumps([{
+                        "type": "text",
+                        "content": "Unable to process page"
+                    }])                    
     else:
         raise ValueError("Invalid provider specified in the VLM config. Only 'vertex_ai' and 'gemini' are supported for now.")
     

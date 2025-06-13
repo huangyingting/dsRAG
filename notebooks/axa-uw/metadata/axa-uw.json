@@ -1,0 +1,39 @@
+{
+    "title": "",
+    "description": "",
+    "language": "en",
+    "supp_id": "",
+    "created_on": 1749790538,
+    "components": {
+        "embedding_model": {
+            "subclass_name": "AzureOpenAIEmbedding",
+            "dimension": 768,
+            "model": "text-embedding-3-small"
+        },
+        "reranker": {
+            "subclass_name": "AzureCohereReranker",
+            "model": "Cohere-rerank-v3.5"
+        },
+        "auto_context_model": {
+            "subclass_name": "AzureOpenAIChatAPI",
+            "model": "gpt-4.1-mini",
+            "temperature": 0.2,
+            "max_tokens": 1000
+        },
+        "vector_db": {
+            "subclass_name": "BasicVectorDB",
+            "kb_id": "axa-uw",
+            "storage_directory": "./axa-uw",
+            "use_faiss": false
+        },
+        "chunk_db": {
+            "subclass_name": "BasicChunkDB",
+            "kb_id": "axa-uw",
+            "storage_directory": "./axa-uw"
+        },
+        "file_system": {
+            "subclass_name": "LocalFileSystem",
+            "base_path": "./axa-uw/page_images"
+        }
+    }
+}

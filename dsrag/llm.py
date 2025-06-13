@@ -257,3 +257,33 @@ class GeminiAPI(LLM):
             'max_tokens': self.max_tokens,
         })
         return base_dict
+    
+class AzureOpenAIChatAPI(LLM):
+    def __init__(self, model: str = "gpt-4.1-nano", temperature: float = 0.2, max_tokens: int = 1000):
+        self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+
+    def make_llm_call(self, chat_messages: list[dict]) -> str:
+        client = openai.AzureOpenAI(
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15")
+        )
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=chat_messages,
+            max_tokens=self.max_tokens,
+            temperature=self.temperature,
+        )
+        llm_output = response.choices[0].message.content.strip()
+        return llm_output
+    
+    def to_dict(self):
+        base_dict = super().to_dict()
+        base_dict.update({
+            'model': self.model,
+            'temperature': self.temperature,
+            'max_tokens': self.max_tokens,
+        })
+        return base_dict
