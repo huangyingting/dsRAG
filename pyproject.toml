@@ -62,6 +62,10 @@ pinecone = ["pinecone>=3.0.0"]
 postgres = ["psycopg2-binary>=2.9.0", "pgvector>=0.2.0"]
 boto3 = ["boto3>=1.28.0"]
 
+# Azure optional dependencies
+azure-storage = ["azure-storage-blob>=12.19.0", "azure-core>=1.29.0"]
+azure-openai = ["openai>=1.52.2"]  # Azure OpenAI uses the same OpenAI SDK
+
 # LLM/embedding/reranker optional dependencies
 openai = ["openai>=1.52.2"]
 cohere = ["cohere>=4.0.0"]
@@ -80,9 +84,14 @@ all-models = [
     "dsrag[openai,cohere,voyageai,ollama,anthropic,google-generativeai,google-genai]"
 ]
 
+# Azure complete installation
+azure = [
+    "dsrag[azure-storage,azure-openai]"
+]
+
 # Complete installation with all optional dependencies
 all = [
-    "dsrag[all-dbs,all-models]"
+    "dsrag[all-dbs,all-models,azure]"
 ]
 
 [tool.setuptools.packages.find]
