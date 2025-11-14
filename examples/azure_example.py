@@ -24,6 +24,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # Import dsRAG components
 from dsrag.knowledge_base import KnowledgeBase
 from dsrag.azure import AzureBlobStorage, AzureOpenAIChatAPI, AzureOpenAIEmbedding
+# AzureOpenAIVLM is imported conditionally in the example
 
 
 def main():
@@ -69,6 +70,21 @@ def main():
     )
     print(f"   ✓ Azure OpenAI Embedding initialized with deployment: {embedding_deployment}")
     
+    # Step 3b: Initialize Azure OpenAI VLM (optional, for vision-based parsing)
+    vlm_deployment = os.environ.get("AZURE_OPENAI_VLM_DEPLOYMENT", "gpt-4o")
+    azure_vlm = None
+    try:
+        from dsrag.azure import AzureOpenAIVLM
+        print(f"\n3b. Initializing Azure OpenAI VLM (optional)...")
+        azure_vlm = AzureOpenAIVLM(
+            deployment_name=vlm_deployment,
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+        )
+        print(f"   ✓ Azure OpenAI VLM initialized with deployment: {vlm_deployment}")
+    except Exception as e:
+        print(f"   ⚠ Azure OpenAI VLM initialization skipped: {e}")
+    
     # Step 4: Create Knowledge Base
     print(f"\n4. Creating Knowledge Base '{kb_id}'...")
     kb = KnowledgeBase(
@@ -76,6 +92,7 @@ def main():
         embedding_model=azure_embedding,
         auto_context_model=azure_chat,
         file_system=azure_storage,
+        vlm_client=azure_vlm,  # Optional VLM client for vision-based parsing
         exists_ok=True,  # Allow loading existing KB
     )
     print(f"   ✓ Knowledge Base created successfully")
@@ -203,6 +220,7 @@ def main():
     print("  ✓ Azure Blob Storage for document and metadata storage")
     print("  ✓ Azure OpenAI for chat completions (AutoContext)")
     print("  ✓ Azure OpenAI for text embeddings")
+    print("  ✓ Azure OpenAI VLM for vision-based document parsing (optional)")
     print("  ✓ Creating and querying a knowledge base")
     print("  ✓ Persistence and loading of configurations")
     print("\nCleanup:")

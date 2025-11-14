@@ -27,6 +27,7 @@ def check_syntax():
         "dsrag/azure/blob_storage.py",
         "dsrag/azure/azure_openai_chat.py",
         "dsrag/azure/azure_openai_embedding.py",
+        "dsrag/azure/azure_openai_vlm.py",
     ]
     
     try:

@@ -29,6 +29,15 @@ An `Embedding` implementation that uses Azure OpenAI Service for text embeddings
 - Configurable embedding dimensions
 - Batch embedding support
 
+### 4. Azure OpenAI VLM (`AzureOpenAIVLM`)
+A `VLM` (Vision Language Model) implementation that uses Azure OpenAI Service for image analysis.
+
+**Features:**
+- Support for GPT-4 Vision models (gpt-4-vision-preview, gpt-4o, gpt-4-turbo)
+- Extract structured data from images
+- Document parsing with visual understanding
+- Configurable response schemas
+
 ## Installation
 
 Install dsRAG with Azure support:
@@ -37,7 +46,7 @@ Install dsRAG with Azure support:
 # Install with Azure storage support only
 pip install "dsrag[azure-storage]"
 
-# Install with Azure OpenAI support only
+# Install with Azure OpenAI support only (includes VLM support)
 pip install "dsrag[azure-openai]"
 
 # Install with all Azure components
@@ -71,7 +80,12 @@ You'll need to specify a container name for Azure Blob Storage. The container wi
 
 ```python
 from dsrag.knowledge_base import KnowledgeBase
-from dsrag.azure import AzureBlobStorage, AzureOpenAIChatAPI, AzureOpenAIEmbedding
+from dsrag.azure import (
+    AzureBlobStorage, 
+    AzureOpenAIChatAPI, 
+    AzureOpenAIEmbedding,
+    AzureOpenAIVLM
+)
 
 # Initialize Azure Blob Storage
 azure_storage = AzureBlobStorage(
@@ -97,19 +111,37 @@ azure_embedding = AzureOpenAIEmbedding(
     api_key="your_api_key",
 )
 
+# Initialize Azure OpenAI VLM (for document parsing with vision)
+azure_vlm = AzureOpenAIVLM(
+    deployment_name="gpt-4o",  # Your vision model deployment name
+    azure_endpoint="https://your-resource.openai.azure.com",
+    api_key="your_api_key",
+)
+
 # Create a knowledge base with Azure components
 kb = KnowledgeBase(
     kb_id="my_azure_kb",
     embedding_model=azure_embedding,
     auto_context_model=azure_chat,
     file_system=azure_storage,
+    vlm_client=azure_vlm,  # Optional: for VLM-based document parsing
 )
 
-# Add documents
+# Add documents with VLM parsing
 kb.add_document(
     doc_id="my_document",
-    text="Your document text here...",
+    file_path="path/to/document.pdf",
     document_title="My Document",
+    file_parsing_config={
+        "use_vlm": True,  # Enable VLM parsing
+    }
+)
+
+# Add documents with text
+kb.add_document(
+    doc_id="my_text_doc",
+    text="Your document text here...",
+    document_title="My Text Document",
 )
 
 # Query the knowledge base

@@ -22,7 +22,12 @@ export AZURE_OPENAI_API_KEY="..."
 
 ```python
 from dsrag.knowledge_base import KnowledgeBase
-from dsrag.azure import AzureBlobStorage, AzureOpenAIChatAPI, AzureOpenAIEmbedding
+from dsrag.azure import (
+    AzureBlobStorage, 
+    AzureOpenAIChatAPI, 
+    AzureOpenAIEmbedding,
+    AzureOpenAIVLM  # Optional for vision
+)
 
 # Initialize components
 storage = AzureBlobStorage(
@@ -39,12 +44,18 @@ embedding = AzureOpenAIEmbedding(
     dimension=1536,
 )
 
+# Optional: VLM for document parsing with vision
+vlm = AzureOpenAIVLM(
+    deployment_name="gpt-4o",
+)
+
 # Create KB
 kb = KnowledgeBase(
     kb_id="my_kb",
     embedding_model=embedding,
     auto_context_model=chat,
     file_system=storage,
+    vlm_client=vlm,  # Optional
 )
 
 # Add document
@@ -100,6 +111,17 @@ results = kb.query(
 **Key Methods:**
 - `get_embeddings(texts, input_type=None)`: Returns list of vectors
 
+### AzureOpenAIVLM
+
+**Constructor Parameters:**
+- `deployment_name`: Azure deployment name (required, must be vision model)
+- `azure_endpoint`: Azure endpoint URL
+- `api_key`: Azure API key
+- `api_version`: API version (default: "2024-02-15-preview")
+
+**Key Methods:**
+- `make_llm_call(image_path, system_message, response_schema=None, max_tokens=4000, temperature=0.5)`: Returns response string
+
 ## Testing
 
 ```bash
@@ -120,6 +142,7 @@ python3 examples/azure_example.py --cleanup
 |-----------|------------------------|
 | Chat | `gpt-4`, `gpt-35-turbo`, `gpt-4-turbo` |
 | Embedding | `text-embedding-ada-002`, `text-embedding-3-small`, `text-embedding-3-large` |
+| VLM (Vision) | `gpt-4o`, `gpt-4-turbo`, `gpt-4-vision-preview` |
 
 ## Troubleshooting
 

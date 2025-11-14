@@ -258,6 +258,104 @@ class TestAzureIntegration(unittest.TestCase):
             print(f"Error cleaning up local files: {e}")
 
 
+    def test_008_azure_vlm_basic_call(self):
+        """Test Azure OpenAI VLM with a simple image."""
+        # Skip if VLM deployment not configured
+        vlm_deployment = os.environ.get("AZURE_OPENAI_VLM_DEPLOYMENT")
+        if not vlm_deployment:
+            self.skipTest("AZURE_OPENAI_VLM_DEPLOYMENT not set")
+        
+        from dsrag.azure.azure_openai_vlm import AzureOpenAIVLM
+        from PIL import Image
+        import tempfile
+        
+        # Create Azure VLM client
+        azure_vlm = AzureOpenAIVLM(
+            deployment_name=vlm_deployment,
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        )
+        
+        # Create a simple test image
+        with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp:
+            test_image = Image.new('RGB', (200, 100), color='blue')
+            test_image.save(tmp.name)
+            tmp_path = tmp.name
+        
+        try:
+            # Make VLM call
+            response = azure_vlm.make_llm_call(
+                image_path=tmp_path,
+                system_message="Describe this image in one sentence.",
+                max_tokens=100,
+                temperature=0.3,
+            )
+            
+            self.assertIsInstance(response, str)
+            self.assertGreater(len(response), 0)
+        finally:
+            # Clean up temp file
+            import os as os_module
+            if os_module.path.exists(tmp_path):
+                os_module.remove(tmp_path)
+    
+    def test_009_kb_with_azure_vlm(self):
+        """Test creating KB with Azure VLM client."""
+        vlm_deployment = os.environ.get("AZURE_OPENAI_VLM_DEPLOYMENT")
+        if not vlm_deployment:
+            self.skipTest("AZURE_OPENAI_VLM_DEPLOYMENT not set")
+        
+        from dsrag.azure.azure_openai_vlm import AzureOpenAIVLM
+        
+        azure_vlm = AzureOpenAIVLM(
+            deployment_name=vlm_deployment,
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        )
+        
+        kb = KnowledgeBase(
+            kb_id=self.kb_id + "_vlm",
+            embedding_model=self.azure_embedding,
+            auto_context_model=self.azure_chat,
+            file_system=self.azure_storage,
+            vlm_client=azure_vlm,
+            exists_ok=True,
+        )
+        
+        self.assertIsInstance(kb.vlm_client, AzureOpenAIVLM)
+        
+        # Clean up
+        try:
+            kb.delete()
+        except:
+            pass
+    
+    @classmethod
+    def tearDownClass(cls):
+        """Clean up test resources."""
+        try:
+            # Delete the test knowledge base
+            kb = KnowledgeBase(kb_id=cls.kb_id)
+            kb.delete()
+        except Exception as e:
+            print(f"Error cleaning up test KB: {e}")
+        
+        # Clean up VLM test KB if it exists
+        try:
+            kb_vlm = KnowledgeBase(kb_id=cls.kb_id + "_vlm")
+            kb_vlm.delete()
+        except:
+            pass
+        
+        try:
+            # Clean up local temporary files
+            import shutil
+            if os.path.exists(cls.base_path):
+                shutil.rmtree(cls.base_path)
+        except Exception as e:
+            print(f"Error cleaning up local files: {e}")
+
+
 @unittest.skipUnless(AZURE_AVAILABLE, "Azure dependencies not available")
 class TestAzureSerializationDeserialization(unittest.TestCase):
     """Test serialization and deserialization of Azure components."""
@@ -307,6 +405,23 @@ class TestAzureSerializationDeserialization(unittest.TestCase):
             self.assertEqual(serialized['subclass_name'], 'AzureOpenAIEmbedding')
             self.assertEqual(serialized['deployment_name'], 'text-embedding-ada-002')
             self.assertEqual(serialized['dimension'], 1536)
+    
+    def test_azure_vlm_serialization(self):
+        """Test AzureOpenAIVLM to_dict."""
+        with unittest.mock.patch('dsrag.azure.azure_openai_vlm.AzureOpenAI'):
+            from dsrag.azure.azure_openai_vlm import AzureOpenAIVLM
+            
+            vlm = AzureOpenAIVLM(
+                deployment_name="gpt-4o",
+                azure_endpoint="https://test.openai.azure.com",
+                api_key="test_key",
+            )
+            
+            serialized = vlm.to_dict()
+            
+            self.assertEqual(serialized['subclass_name'], 'AzureOpenAIVLM')
+            self.assertEqual(serialized['deployment_name'], 'gpt-4o')
+            self.assertEqual(serialized['azure_endpoint'], 'https://test.openai.azure.com')
 
 
 if __name__ == "__main__":
