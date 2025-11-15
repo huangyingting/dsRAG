@@ -252,6 +252,34 @@ wheels = [
 ]
 
 [[package]]
+name = "azure-core"
+version = "1.36.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0a/c4/d4ff3bc3ddf155156460bff340bbe9533f99fac54ddea165f35a8619f162/azure_core-1.36.0.tar.gz", hash = "sha256:22e5605e6d0bf1d229726af56d9e92bc37b6e726b141a18be0b4d424131741b7", size = 351139 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b1/3c/b90d5afc2e47c4a45f4bba00f9c3193b0417fad5ad3bb07869f9d12832aa/azure_core-1.36.0-py3-none-any.whl", hash = "sha256:fee9923a3a753e94a259563429f3644aaf05c486d45b1215d098115102d91d3b", size = 213302 },
+]
+
+[[package]]
+name = "azure-storage-blob"
+version = "12.27.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-core" },
+    { name = "cryptography" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/36/7c/2fd872e11a88163f208b9c92de273bf64bb22d0eef9048cc6284d128a77a/azure_storage_blob-12.27.1.tar.gz", hash = "sha256:a1596cc4daf5dac9be115fcb5db67245eae894cf40e4248243754261f7b674a6", size = 597579 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/9e/1c90a122ea6180e8c72eb7294adc92531b0e08eb3d2324c2ba70d37f4802/azure_storage_blob-12.27.1-py3-none-any.whl", hash = "sha256:65d1e25a4628b7b6acd20ff7902d8da5b4fde8e46e19c8f6d213a3abc3ece272", size = 428954 },
+]
+
+[[package]]
 name = "backoff"
 version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -849,7 +877,9 @@ name = "dsrag"
 version = "0.5.6"
 source = { editable = "." }
 dependencies = [
+    { name = "azure-storage-blob" },
     { name = "docx2txt" },
+    { name = "google-generativeai" },
     { name = "instructor" },
     { name = "langchain-core", version = "0.3.79", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "langchain-core", version = "1.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
@@ -879,6 +909,8 @@ dependencies = [
 [package.optional-dependencies]
 all = [
     { name = "anthropic" },
+    { name = "azure-core" },
+    { name = "azure-storage-blob" },
     { name = "boto3" },
     { name = "chromadb" },
     { name = "cohere" },
@@ -919,6 +951,18 @@ all-models = [
 ]
 anthropic = [
     { name = "anthropic" },
+]
+azure = [
+    { name = "azure-core" },
+    { name = "azure-storage-blob" },
+    { name = "openai" },
+]
+azure-openai = [
+    { name = "openai" },
+]
+azure-storage = [
+    { name = "azure-core" },
+    { name = "azure-storage-blob" },
 ]
 boto3 = [
     { name = "boto3" },
@@ -968,21 +1012,27 @@ weaviate = [
 [package.metadata]
 requires-dist = [
     { name = "anthropic", marker = "extra == 'anthropic'", specifier = ">=0.37.1" },
+    { name = "azure-core", marker = "extra == 'azure-storage'", specifier = ">=1.29.0" },
+    { name = "azure-storage-blob", specifier = ">=12.27.1" },
+    { name = "azure-storage-blob", marker = "extra == 'azure-storage'", specifier = ">=12.19.0" },
     { name = "boto3", marker = "extra == 'boto3'", specifier = ">=1.28.0" },
     { name = "chromadb", marker = "extra == 'chroma'", specifier = ">=0.5.5" },
     { name = "cohere", marker = "extra == 'cohere'", specifier = ">=4.0.0" },
     { name = "docx2txt", specifier = ">=0.8" },
-    { name = "dsrag", extras = ["all-dbs", "all-models"], marker = "extra == 'all'" },
+    { name = "dsrag", extras = ["all-dbs", "all-models", "azure"], marker = "extra == 'all'" },
+    { name = "dsrag", extras = ["azure-storage", "azure-openai"], marker = "extra == 'azure'" },
     { name = "dsrag", extras = ["faiss", "chroma", "weaviate", "qdrant", "milvus", "pinecone", "postgres", "boto3"], marker = "extra == 'all-dbs'" },
     { name = "dsrag", extras = ["openai", "cohere", "voyageai", "ollama", "anthropic", "google-generativeai", "google-genai"], marker = "extra == 'all-models'" },
     { name = "faiss-cpu", marker = "extra == 'faiss'", specifier = ">=1.8.0" },
     { name = "google-genai", marker = "extra == 'google-genai'", specifier = ">=0.1.0" },
+    { name = "google-generativeai", specifier = ">=0.8.5" },
     { name = "google-generativeai", marker = "extra == 'google-generativeai'", specifier = ">=0.8.3" },
     { name = "instructor", specifier = ">=1.7.0" },
     { name = "langchain-core", specifier = ">=0.3.0" },
     { name = "langchain-text-splitters", specifier = ">=0.3.0" },
     { name = "numpy", specifier = ">=1.20.0" },
     { name = "ollama", marker = "extra == 'ollama'", specifier = ">=0.1.0" },
+    { name = "openai", marker = "extra == 'azure-openai'", specifier = ">=1.52.2" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.52.2" },
     { name = "pandas", specifier = ">=2.0.0" },
     { name = "pdf2image", specifier = ">=1.16.0" },
@@ -1004,7 +1054,7 @@ requires-dist = [
     { name = "voyageai", marker = "extra == 'voyageai'", specifier = ">=0.1.0" },
     { name = "weaviate-client", marker = "extra == 'weaviate'", specifier = ">=4.6.0" },
 ]
-provides-extras = ["faiss", "chroma", "weaviate", "qdrant", "milvus", "pinecone", "postgres", "boto3", "openai", "cohere", "voyageai", "ollama", "anthropic", "google-generativeai", "google-genai", "all-dbs", "all-models", "all"]
+provides-extras = ["faiss", "chroma", "weaviate", "qdrant", "milvus", "pinecone", "postgres", "boto3", "azure-storage", "azure-openai", "openai", "cohere", "voyageai", "ollama", "anthropic", "google-generativeai", "google-genai", "all-dbs", "all-models", "azure", "all"]
 
 [[package]]
 name = "durationpy"
@@ -1847,6 +1897,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/31/f0/7f31609ec2fb84b140ff573abf1cce78cd3a2a3c6479b60aa82b69d40d2a/instructor-1.13.0.tar.gz", hash = "sha256:bf838a5c503fafdd034a9b1f8544c5e1f62462eea9f89932bc75c116ad35ab5a", size = 69898121 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/95/64/6542ac826a4c9b937b67c096a785af1aaa26b22fcb7c81223cfe4038205b/instructor-1.13.0-py3-none-any.whl", hash = "sha256:2b735b6ea0d3194548369a18254f1dde83cb5ec0b182de77adbadd8be73caddc", size = 160904 },
+]
+
+[[package]]
+name = "isodate"
+version = "0.7.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/54/4d/e940025e2ce31a8ce1202635910747e5a87cc3a6a6bb2d00973375014749/isodate-0.7.2.tar.gz", hash = "sha256:4cd1aa0f43ca76f4a6c6c0292a85f40b35ec2e43e315b59f06e6d32171a953e6", size = 29705 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/15/aa/0aca39a37d3c7eb941ba736ede56d689e7be91cab5d9ca846bde3999eba6/isodate-0.7.2-py3-none-any.whl", hash = "sha256:28009937d8031054830160fce6d409ed342816b543597cece116d966c6d99e15", size = 22320 },
 ]
 
 [[package]]

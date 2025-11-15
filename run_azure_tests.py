@@ -9,6 +9,10 @@ import sys
 import os
 import subprocess
 import argparse
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def print_header(text):
