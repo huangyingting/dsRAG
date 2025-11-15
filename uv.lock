@@ -878,6 +878,7 @@ version = "0.5.6"
 source = { editable = "." }
 dependencies = [
     { name = "azure-storage-blob" },
+    { name = "cohere" },
     { name = "docx2txt" },
     { name = "google-generativeai" },
     { name = "instructor" },
@@ -1017,6 +1018,7 @@ requires-dist = [
     { name = "azure-storage-blob", marker = "extra == 'azure-storage'", specifier = ">=12.19.0" },
     { name = "boto3", marker = "extra == 'boto3'", specifier = ">=1.28.0" },
     { name = "chromadb", marker = "extra == 'chroma'", specifier = ">=0.5.5" },
+    { name = "cohere", specifier = ">=5.20.0" },
     { name = "cohere", marker = "extra == 'cohere'", specifier = ">=4.0.0" },
     { name = "docx2txt", specifier = ">=0.8" },
     { name = "dsrag", extras = ["all-dbs", "all-models", "azure"], marker = "extra == 'all'" },

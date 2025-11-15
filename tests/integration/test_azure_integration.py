@@ -470,6 +470,222 @@ class TestAzureSerializationDeserialization(unittest.TestCase):
             self.assertEqual(serialized['subclass_name'], 'AzureOpenAIVLM')
             self.assertEqual(serialized['deployment_name'], 'gpt-4o')
             self.assertEqual(serialized['azure_endpoint'], 'https://test.openai.azure.com')
+    
+    def test_azure_cohere_reranker_serialization(self):
+        """Test AzureCohereReranker to_dict and from_dict."""
+        # Check if Cohere is available
+        try:
+            from dsrag.azure import AzureCohereReranker
+            from dsrag.reranker import Reranker
+        except ImportError:
+            self.skipTest("Cohere not installed")
+        
+        with mock.patch('dsrag.azure.azure_cohere_reranker.cohere.Client'):
+            reranker = AzureCohereReranker(
+                model="Cohere-rerank-v3.5",
+                azure_endpoint="https://test-cohere.azure.com",
+                api_key="test_cohere_key",
+            )
+            
+            serialized = reranker.to_dict()
+            
+            self.assertEqual(serialized['subclass_name'], 'AzureCohereReranker')
+            self.assertEqual(serialized['model'], 'Cohere-rerank-v3.5')
+            self.assertEqual(serialized['azure_endpoint'], 'https://test-cohere.azure.com')
+            self.assertEqual(serialized['api_key'], 'test_cohere_key')
+            
+            # Test deserialization
+            with mock.patch('dsrag.azure.azure_cohere_reranker.cohere.Client'):
+                reranker2 = Reranker.from_dict(serialized)
+                self.assertIsInstance(reranker2, AzureCohereReranker)
+                self.assertEqual(reranker2.model, 'Cohere-rerank-v3.5')
+                self.assertEqual(reranker2.azure_endpoint, 'https://test-cohere.azure.com')
+
+
+@unittest.skipUnless(AZURE_AVAILABLE, "Azure dependencies not available")
+class TestAzureCohereIntegration(unittest.TestCase):
+    """Integration tests for Azure Cohere reranker."""
+    
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixtures for Azure Cohere."""
+        # Check if Cohere is available
+        try:
+            from dsrag.azure import AzureCohereReranker
+            cls.cohere_available = True
+        except ImportError:
+            cls.cohere_available = False
+            raise unittest.SkipTest("Cohere not installed")
+        
+        # Check for Azure Cohere environment variables
+        cls.azure_cohere_endpoint = os.environ.get("AZURE_COHERE_ENDPOINT")
+        cls.azure_cohere_api_key = os.environ.get("AZURE_COHERE_API_KEY")
+        
+        if not cls.azure_cohere_endpoint or not cls.azure_cohere_api_key:
+            raise unittest.SkipTest(
+                "Azure Cohere not configured. Set AZURE_COHERE_ENDPOINT and "
+                "AZURE_COHERE_API_KEY to run these tests."
+            )
+        
+        # Set up other Azure components for KB testing
+        cls.base_path = os.path.expanduser("~/dsrag_test_azure_cohere")
+        cls.container_name = os.environ.get("AZURE_STORAGE_CONTAINER_NAME", "test-cohere")
+        
+        # Initialize Azure components
+        connection_string = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+        if connection_string:
+            cls.azure_storage = AzureBlobStorage(
+                base_path=cls.base_path,
+                container_name=cls.container_name,
+                connection_string=connection_string,
+            )
+        else:
+            account_name = os.environ.get("AZURE_STORAGE_ACCOUNT_NAME")
+            account_key = os.environ.get("AZURE_STORAGE_ACCOUNT_KEY")
+            if account_name and account_key:
+                cls.azure_storage = AzureBlobStorage(
+                    base_path=cls.base_path,
+                    container_name=cls.container_name,
+                    account_name=account_name,
+                    account_key=account_key,
+                )
+            else:
+                raise unittest.SkipTest("Azure Storage not configured")
+        
+        cls.azure_embedding = AzureOpenAIEmbedding(
+            deployment_name=os.environ["AZURE_OPENAI_EMBEDDING_DEPLOYMENT"],
+            dimension=1536,
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        )
+        
+        cls.azure_chat = AzureOpenAIChatAPI(
+            deployment_name=os.environ["AZURE_OPENAI_CHAT_DEPLOYMENT"],
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        )
+        
+        cls.kb_id = "test_azure_cohere_kb"
+    
+    def test_001_azure_cohere_reranker_basic(self):
+        """Test basic Azure Cohere reranker functionality."""
+        from dsrag.azure import AzureCohereReranker
+        
+        reranker = AzureCohereReranker(
+            model="Cohere-rerank-v3.5",
+            azure_endpoint=self.azure_cohere_endpoint,
+            api_key=self.azure_cohere_api_key,
+        )
+        
+        # Create mock search results
+        search_results = [
+            {
+                'metadata': {
+                    'chunk_header': 'Document 1',
+                    'chunk_text': 'This is about Azure cloud computing services.',
+                },
+                'similarity': 0.5,
+            },
+            {
+                'metadata': {
+                    'chunk_header': 'Document 2',
+                    'chunk_text': 'This is about cooking recipes.',
+                },
+                'similarity': 0.4,
+            },
+        ]
+        
+        # Test reranking
+        reranked = reranker.rerank_search_results(
+            query="What is Azure?",
+            search_results=search_results,
+        )
+        
+        self.assertEqual(len(reranked), 2)
+        self.assertIn('similarity', reranked[0])
+        # First result should be more relevant to Azure
+        self.assertIn('Azure', reranked[0]['metadata']['chunk_text'])
+    
+    def test_002_kb_with_azure_cohere_reranker(self):
+        """Test creating KB with Azure Cohere reranker."""
+        from dsrag.azure import AzureCohereReranker
+        
+        reranker = AzureCohereReranker(
+            model="Cohere-rerank-v3.5",
+            azure_endpoint=self.azure_cohere_endpoint,
+            api_key=self.azure_cohere_api_key,
+        )
+        
+        kb = KnowledgeBase(
+            kb_id=self.kb_id,
+            storage_directory=self.base_path,
+            embedding_model=self.azure_embedding,
+            reranker=reranker,
+            auto_context_model=self.azure_chat,
+            file_system=self.azure_storage,
+            exists_ok=False,
+        )
+        
+        self.assertIsInstance(kb.reranker, AzureCohereReranker)
+        
+        # Add a test document
+        test_text = """
+        Azure provides comprehensive cloud services including compute, storage, 
+        networking, databases, analytics, and AI capabilities. Organizations can 
+        build, deploy, and manage applications through Microsoft's global datacenter network.
+        """
+        
+        kb.add_document(
+            doc_id="azure_doc",
+            text=test_text,
+            document_title="Azure Overview",
+        )
+        
+        # Verify document was added
+        doc_ids = kb.chunk_db.get_all_doc_ids()
+        self.assertIn("azure_doc", doc_ids)
+    
+    def test_003_query_with_azure_cohere_reranker(self):
+        """Test querying KB with Azure Cohere reranker."""
+        kb = KnowledgeBase(kb_id=self.kb_id, storage_directory=self.base_path)
+        
+        # Verify reranker was loaded correctly
+        from dsrag.azure import AzureCohereReranker
+        self.assertIsInstance(kb.reranker, AzureCohereReranker)
+        
+        # Query with Azure Cohere reranking
+        results = kb.query(
+            search_queries=["What cloud services does Azure provide?"],
+            rse_params="find_all",
+        )
+        
+        # Should get results (reranking improves relevance)
+        self.assertGreater(len(results), 0, "Query should return results")
+        
+        # Verify result structure
+        for result in results:
+            self.assertIn("doc_id", result)
+            self.assertIn("content", result)
+            self.assertIn("score", result)
+    
+    @classmethod
+    def tearDownClass(cls):
+        """Clean up test resources."""
+        if not cls.cohere_available:
+            return
+        
+        try:
+            kb = KnowledgeBase(kb_id=cls.kb_id, storage_directory=cls.base_path)
+            kb.delete()
+        except Exception as e:
+            print(f"Error cleaning up test KB: {e}")
+        
+        try:
+            import shutil
+            if os.path.exists(cls.base_path):
+                shutil.rmtree(cls.base_path)
+        except Exception as e:
+            print(f"Error cleaning up local files: {e}")
 
 
 if __name__ == "__main__":

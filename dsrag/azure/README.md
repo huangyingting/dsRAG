@@ -38,6 +38,15 @@ A `VLM` (Vision Language Model) implementation that uses Azure OpenAI Service fo
 - Document parsing with visual understanding
 - Configurable response schemas
 
+### 5. Azure Cohere Reranker (`AzureCohereReranker`)
+A `Reranker` implementation that uses Cohere reranking models deployed on Azure.
+
+**Features:**
+- Support for Cohere rerank models (Cohere-rerank-v3.5 and others)
+- Custom Azure endpoint configuration
+- Compatible with Azure-deployed Cohere endpoints
+- Improves search result relevance
+
 ## Installation
 
 Install dsRAG with Azure support:
@@ -51,6 +60,9 @@ pip install "dsrag[azure-openai]"
 
 # Install with all Azure components
 pip install "dsrag[azure]"
+
+# Install with Cohere support (for Azure Cohere reranker)
+pip install "dsrag[cohere]"
 ```
 
 ## Configuration
@@ -69,6 +81,10 @@ export AZURE_STORAGE_ACCOUNT_KEY="your_account_key"
 # Azure OpenAI
 export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
 export AZURE_OPENAI_API_KEY="your_api_key"
+
+# Azure Cohere (optional, for reranking)
+export AZURE_COHERE_ENDPOINT="https://your-cohere-endpoint.azure.com"
+export AZURE_COHERE_API_KEY="your_cohere_api_key"
 ```
 
 ### Container Name
@@ -84,7 +100,8 @@ from dsrag.azure import (
     AzureBlobStorage, 
     AzureOpenAIChatAPI, 
     AzureOpenAIEmbedding,
-    AzureOpenAIVLM
+    AzureOpenAIVLM,
+    AzureCohereReranker,  # Optional: for Azure-deployed Cohere reranking
 )
 
 # Initialize Azure Blob Storage
@@ -118,10 +135,18 @@ azure_vlm = AzureOpenAIVLM(
     api_key="your_api_key",
 )
 
+# Initialize Azure Cohere Reranker (optional, for better search result ranking)
+azure_reranker = AzureCohereReranker(
+    model="Cohere-rerank-v3.5",  # default model
+    azure_endpoint="https://your-cohere-endpoint.azure.com",
+    api_key="your_cohere_api_key",
+)
+
 # Create a knowledge base with Azure components
 kb = KnowledgeBase(
     kb_id="my_azure_kb",
     embedding_model=azure_embedding,
+    reranker=azure_reranker,  # Optional: for Azure Cohere reranking
     auto_context_model=azure_chat,
     file_system=azure_storage,
     vlm_client=azure_vlm,  # Optional: for VLM-based document parsing

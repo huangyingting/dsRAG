@@ -4,6 +4,7 @@ This module provides Azure-specific implementations for dsRAG, including:
 - Azure Blob Storage for file system storage
 - Azure OpenAI for chat and embedding models
 - Azure OpenAI VLM for vision-language models
+- Azure Cohere for reranking models
 """
 
 from .blob_storage import AzureBlobStorage
@@ -17,3 +18,10 @@ __all__ = [
     "AzureOpenAIEmbedding",
     "AzureOpenAIVLM",
 ]
+
+# Cohere is an optional dependency
+try:
+    from .azure_cohere_reranker import AzureCohereReranker
+    __all__.append("AzureCohereReranker")
+except ImportError:
+    pass

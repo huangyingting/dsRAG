@@ -15,6 +15,8 @@ try:
         AzureOpenAIEmbedding,
         AzureOpenAIVLM,
     )
+    # AzureCohereReranker is conditionally imported in azure/__init__.py
+    # if cohere is available
 except ImportError:
     # Azure dependencies are optional
     pass
